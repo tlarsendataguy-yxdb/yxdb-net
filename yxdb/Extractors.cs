@@ -211,7 +211,7 @@ namespace yxdb
                 return Encoding.UTF8.GetString(buffer, start, len);
             }
 
-            return Encoding.Unicode.GetString(buffer, start, len);
+            return Encoding.Unicode.GetString(buffer, start, len*2);
         }
 
         private static int GetStrLen(byte[] buffer, int start, int fieldLength, int charSize)
