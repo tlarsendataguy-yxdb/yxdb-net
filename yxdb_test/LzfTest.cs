@@ -1,6 +1,5 @@
 using System;
 using Xunit;
-using Xunit.Sdk;
 using yxdb;
 
 namespace yxdb_test
