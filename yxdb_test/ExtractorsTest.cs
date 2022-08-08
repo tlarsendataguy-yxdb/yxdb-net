@@ -1,11 +1,7 @@
 using System;
-using System.Runtime.CompilerServices;
 using System.Text;
-using Microsoft.VisualBasic;
 using Xunit;
 using yxdb;
-
-[assembly: InternalsVisibleTo("yxdb_test")]
 
 namespace yxdb_test
 {
