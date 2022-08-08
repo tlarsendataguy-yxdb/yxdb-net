@@ -1,8 +1,6 @@
 using System;
 using System.IO;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("yxdb_test")]
 namespace yxdb
 {
     internal class BufferedRecordReader
