@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("yxdb_test")]
 namespace yxdb
 {
-    internal class LittleEndian
+    internal static class LittleEndian
     {
         public static int ToInt32(byte[] value, int startIndex)
         {
