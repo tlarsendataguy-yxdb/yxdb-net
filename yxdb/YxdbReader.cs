@@ -9,14 +9,14 @@ namespace yxdb
 {
     public class YxdbReader
     {
-        private YxdbReader(string path)
+        public YxdbReader(string path)
         {
             _stream = File.Open(path, FileMode.Open);
             _fields = new List<MetaInfoField>();
             LoadHeaderAndMetaInfo();
         }
 
-        private YxdbReader(Stream stream)
+        public YxdbReader(Stream stream)
         {
             _stream = stream;
             _fields = new List<MetaInfoField>();
@@ -31,9 +31,14 @@ namespace yxdb
         private YxdbRecord _record;
         private BufferedRecordReader _recordReader;
 
+        public List<YxdbField> ListFields()
+        {
+            return _record.Fields;
+        }
+        
         public void Close()
         {
-            _stream.Close();
+            _recordReader.Close();
         }
 
         public bool Next()
@@ -259,7 +264,7 @@ namespace yxdb
 
         private void CloseStreamAndThrow()
         {
-            _stream.Close();
+            Close();
             throw new ArgumentException("file is an invalid YXDB");
         }
     }

@@ -19,6 +19,7 @@ namespace yxdb_test
                 Assert.Equal(recordsRead, LittleEndian.ToInt32(reader.RecordBuffer, 0));
             }
             Assert.Equal(100000, recordsRead);
+            reader.Close();
         }
 
         [Fact]
@@ -33,6 +34,7 @@ namespace yxdb_test
                 Assert.Equal(recordsRead, reader.RecordBuffer[0]);
             }
             Assert.Equal(3, recordsRead);
+            reader.Close();
         }
 
         private static BufferedRecordReader GenerateReader(string path, int fixedLen, bool hasVarFields)

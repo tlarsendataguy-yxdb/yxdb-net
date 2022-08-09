@@ -41,7 +41,7 @@ namespace yxdb
             _currentRecord++;
             if (_currentRecord > _totalRecords)
             {
-                _stream.Dispose();
+                Close();
                 return false;
             }
 
@@ -56,6 +56,12 @@ namespace yxdb
             }
 
             return true;
+        }
+
+        public void Close()
+        {
+            _stream.Close();
+            _stream.Dispose();
         }
 
         private void ReadVariableRecord()
