@@ -5,7 +5,7 @@
         <LangVersion>default</LangVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageVersion>0.0.1</PackageVersion>
-        <Title>YXDB</Title>
+        <Title>yxdb</Title>
         <Authors>tlarsendataguy</Authors>
         <Description>Read .yxdb files into .NET applications</Description>
         <Copyright>tlarsendataguy</Copyright>
@@ -13,6 +13,7 @@
         <PackageLicenseUrl>https://github.com/tlarsendataguy-yxdb/yxdb-net/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/tlarsendataguy-yxdb/yxdb-net</RepositoryUrl>
         <RepositoryType>GitHub</RepositoryType>
+        <PackageId>yxdb</PackageId>
     </PropertyGroup>
 
 </Project>
