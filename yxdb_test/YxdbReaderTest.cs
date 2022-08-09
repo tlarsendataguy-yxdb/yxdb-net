@@ -16,7 +16,7 @@ namespace yxdb_test
             var yxdb = new YxdbReader(path);
             Assert.Equal(1, yxdb.NumRecords);
             Assert.NotNull(yxdb.MetaInfoStr);
-            Assert.Equal(_allNormalFieldsMetaXml, yxdb.MetaInfoStr);
+            Assert.Equal(AllNormalFieldsMetaXml, yxdb.MetaInfoStr);
             Assert.Equal(16, yxdb.ListFields().Count);
 
             int read = 0;
@@ -161,10 +161,9 @@ namespace yxdb_test
         {
 	        var path = GetPath("VeryLongField.yxdb");
 	        var yxdb = new YxdbReader(path);
-	        byte[] blob;
 
 	        yxdb.Next();
-	        blob = yxdb.ReadBlob(1);
+	        var blob = yxdb.ReadBlob(1);
 	        Assert.Equal(604732, blob.Length);
 
 	        yxdb.Next();
@@ -182,8 +181,8 @@ namespace yxdb_test
         {
             return $"../../../test_files/{fileName}";
         }
-        
-        private static string _allNormalFieldsMetaXml = @"<RecordInfo>
+
+        private const string AllNormalFieldsMetaXml = @"<RecordInfo>
 	<Field name=""ByteField"" source=""TextInput:"" type=""Byte""/>
 	<Field name=""BoolField"" source=""Formula: 1"" type=""Bool""/>
 	<Field name=""Int16Field"" source=""Formula: 16"" type=""Int16""/>
@@ -202,6 +201,5 @@ namespace yxdb_test
 	<Field name=""DateTimeField"" source=""Formula: &apos;2020-02-03 04:05:06&apos;"" type=""DateTime""/>
 </RecordInfo>
 ";
-
     }
 }
