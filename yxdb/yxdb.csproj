@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>default</LangVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>0.0.1</PackageVersion>
+        <PackageVersion>0.0.3</PackageVersion>
         <Title>yxdb</Title>
         <Authors>tlarsendataguy</Authors>
         <Description>Read .yxdb files into .NET applications</Description>
@@ -14,6 +14,11 @@
         <RepositoryUrl>https://github.com/tlarsendataguy-yxdb/yxdb-net</RepositoryUrl>
         <RepositoryType>GitHub</RepositoryType>
         <PackageId>yxdb</PackageId>
+        <PackageReleaseNotes>Try documentation file again</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
 </Project>
