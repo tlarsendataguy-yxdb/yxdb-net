@@ -12,8 +12,8 @@ namespace yxdb
 
         private readonly byte[] _inBuffer;
         private readonly byte[] _outBuffer;
-        private int _iidx;
-        private int _oidx;
+        private int _inIndex;
+        private int _outIndex;
         private int _inLen;
 
         public int Decompress(int len)
@@ -26,10 +26,10 @@ namespace yxdb
                 return 0;
             }
 
-            while (_iidx < _inLen)
+            while (_inIndex < _inLen)
             {
-                var ctrl = _inBuffer[_iidx];
-                _iidx++;
+                var ctrl = _inBuffer[_inIndex];
+                _inIndex++;
 
                 if (ctrl < 32)
                 {
@@ -41,51 +41,51 @@ namespace yxdb
                 }
             }
 
-            return _oidx;
+            return _outIndex;
         }
 
         private void Reset()
         {
-            _iidx = 0;
-            _oidx = 0;
+            _inIndex = 0;
+            _outIndex = 0;
         }
 
         private void CopyByteSequence(byte ctrl)
         {
             var len = ctrl + 1;
-            if (_oidx + len > _outBuffer.Length)
+            if (_outIndex + len > _outBuffer.Length)
             {
                 throw new ArgumentException("output array is too small");
             }
-            Array.Copy(_inBuffer, _iidx, _outBuffer, _oidx, len);
-            _oidx += len;
-            _iidx += len;
+            Array.Copy(_inBuffer, _inIndex, _outBuffer, _outIndex, len);
+            _outIndex += len;
+            _inIndex += len;
         }
 
         private void ExpandRepeatedBytes(byte ctrl)
         {
             var length = ctrl >> 5;
-            var reference = _oidx - ((ctrl & 0x1f) << 8) - 1;
+            var reference = _outIndex - ((ctrl & 0x1f) << 8) - 1;
 
             if (length == 7)
             {
-                length += _inBuffer[_iidx];
-                _iidx++;
+                length += _inBuffer[_inIndex];
+                _inIndex++;
             }
 
-            if (_oidx + length + 2 > _outBuffer.Length)
+            if (_outIndex + length + 2 > _outBuffer.Length)
             {
                 throw new ArgumentException("output array is too small");
             }
 
-            reference -= _inBuffer[_iidx];
-            _iidx++;
+            reference -= _inBuffer[_inIndex];
+            _inIndex++;
 
             length += 2;
 
             while (length > 0)
             {
-                var size = Math.Min(length, _oidx - reference);
+                var size = Math.Min(length, _outIndex - reference);
                 reference = CopyFromReferenceAndIncrement(reference, size);
                 length -= size;
             }
@@ -93,8 +93,8 @@ namespace yxdb
 
         private int CopyFromReferenceAndIncrement(int reference, int size)
         {
-            Array.Copy(_outBuffer, reference, _outBuffer, _oidx, size);
-            _oidx += size;
+            Array.Copy(_outBuffer, reference, _outBuffer, _outIndex, size);
+            _outIndex += size;
             return reference + size;
         }
     }
