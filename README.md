@@ -2,6 +2,8 @@
 
 yxdb-net is a library for reading YXDB files into .NET applications.
 
+Install from [NuGet](https://www.nuget.org/packages/yxdb). The package is compiled against .NET Standard 2.0.
+
 The library does not have external dependencies and is a pure C# solution.
 
 The public API is contained in the YxdbReader class. Instantiate YxdbReader using one of the two constructors:
