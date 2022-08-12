@@ -47,7 +47,7 @@ namespace yxdb_test
                 throw new Exception("header not read");
             }
             var metaInfoSize = LittleEndian.ToInt32(header, 80) * 2;
-            var totalRecords = LittleEndian.ToInt32(header, 104);
+            var totalRecords = LittleEndian.ToInt64(header, 104);
             stream.Seek(metaInfoSize, SeekOrigin.Current);
             return new BufferedRecordReader(stream, fixedLen, hasVarFields, totalRecords);
         }
