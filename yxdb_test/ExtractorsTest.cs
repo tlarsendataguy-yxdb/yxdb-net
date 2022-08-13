@@ -22,7 +22,7 @@ namespace yxdb_test
             var extract = Extractors.NewInt16Extractor(2);
             var result = extract(new byte[] { 0, 0, 10, 0, 1, 0 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace yxdb_test
             var extract = Extractors.NewInt32Extractor(3);
             var result = extract(new byte[] { 0, 0, 0, 10, 0, 0, 0, 1 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace yxdb_test
             var extract = Extractors.NewInt64Extractor(4);
             var result = extract(new byte[] { 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 1 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace yxdb_test
             var extract = Extractors.NewBoolExtractor(4);
             var result = extract(new byte[] { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-            Assert.Equal(true, result);
+            Assert.True(result);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace yxdb_test
             var extract = Extractors.NewBoolExtractor(4);
             var result = extract(new byte[] { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace yxdb_test
             var extract = Extractors.NewByteExtractor(4);
             var result = extract(new byte[] { 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace yxdb_test
             var extract = Extractors.NewFloatExtractor(4);
             var result = extract(new byte[] { 0, 0, 0, 0, 205, 206, 140, 63, 1, 0, 0, 0, 0 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace yxdb_test
             var extract = Extractors.NewDoubleExtractor(4);
             var result = extract(new byte[] { 0, 0, 0, 0, 154, 155, 155, 155, 155, 155, 241, 63, 1 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -148,7 +148,7 @@ namespace yxdb_test
             var extract = Extractors.NewDateExtractor(4);
             var result = extract(new byte[] { 0, 0, 0, 0, 50, 48, 50, 49, 45, 48, 49, 45, 48, 49, 1 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -168,7 +168,7 @@ namespace yxdb_test
             var result = extract(new byte[]
                 { 0, 0, 0, 0, 50, 48, 50, 49, 45, 48, 49, 45, 48, 50, 32, 48, 51, 58, 48, 52, 58, 48, 53, 1 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -196,7 +196,7 @@ namespace yxdb_test
             var extract = Extractors.NewStringExtractor(2, 5);
             var result = extract(new byte[] { 0, 0, 104, 101, 108, 108, 111, 1 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -223,7 +223,7 @@ namespace yxdb_test
             var extract = Extractors.NewFixedDecimalExtractor(2, 10);
             var result = extract(new byte[] { 0, 0, 49, 50, 51, 46, 52, 53, 0, 43, 67, 110, 1 });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -249,7 +249,7 @@ namespace yxdb_test
                 0, 44, 0, 55, 0, 1
             });
 
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -269,7 +269,7 @@ namespace yxdb_test
         public void ExtractNormalBlob()
         {
             var extract = Extractors.NewBlobExtractor(6);
-            var result = extract(_normalBlob);
+            var result = extract(NormalBlob);
             var expected = Encoding.ASCII.GetBytes(new string('B', 200));
             Assert.Equal(expected, result);
         }
@@ -278,7 +278,7 @@ namespace yxdb_test
         public void ExtractSmallBlob()
         {
             var extract = Extractors.NewBlobExtractor(6);
-            var result = extract(_smallBlob);
+            var result = extract(SmallBlob);
             var expected = Encoding.ASCII.GetBytes(new string('B', 100));
             Assert.Equal(expected, result);
         }
@@ -304,14 +304,14 @@ namespace yxdb_test
         {
             var extract = Extractors.NewBlobExtractor(6);
             var result = extract(new byte[] { 1, 0, 65, 0, 0, 32, 1, 0, 0, 0, 0, 0, 0, 0 });
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
         public void ExtractV_String()
         {
             var extract = Extractors.NewV_StringExtractor(6);
-            var result = extract(_smallBlob);
+            var result = extract(SmallBlob);
             Assert.Equal(new string('B', 100), result);
         }
 
@@ -320,7 +320,7 @@ namespace yxdb_test
         {
             var extract = Extractors.NewV_StringExtractor(2);
             var result = extract(new byte[] { 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8 });
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -335,7 +335,7 @@ namespace yxdb_test
         public void ExtractV_WString()
         {
             var extract = Extractors.NewV_WStringExtractor(2);
-            var result = extract(_normalBlob);
+            var result = extract(NormalBlob);
             Assert.Equal(new string('A', 100), result);
         }
 
@@ -344,7 +344,7 @@ namespace yxdb_test
         {
             var extract = Extractors.NewV_WStringExtractor(2);
             var result = extract(new byte[] { 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8 });
-            Assert.Equal(null, result);
+            Assert.Null(result);
         }
 
         [Fact]
@@ -355,7 +355,7 @@ namespace yxdb_test
             Assert.Equal("", result);
         }
 
-        private static byte[] _normalBlob = new byte[]
+        private static readonly byte[] NormalBlob = new byte[]
         {
             1, 0, 12, 0, 0, 0, 212, 0, 0, 0, 152, 1, 0, 0, 144, 1, 0, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65,
             0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0,
@@ -376,7 +376,7 @@ namespace yxdb_test
             66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66
         };
 
-        private static byte[] _smallBlob = new byte[]
+        private static readonly byte[] SmallBlob = new byte[]
         {
             1, 0, 12, 0, 0, 0, 109, 0, 0, 0, 202, 0, 0, 0, 201, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0,
             65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65, 0, 65,
