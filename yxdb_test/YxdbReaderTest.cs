@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Xunit;
+using Xunit.Abstractions;
 using yxdb;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
@@ -9,6 +9,12 @@ namespace yxdb_test
 {
     public class YxdbReaderTest
     {
+	    private readonly ITestOutputHelper _output;
+	    public YxdbReaderTest(ITestOutputHelper output)
+	    {
+		    this._output = output;
+	    }
+	    
         [Fact]
         public void TestGetReader()
         {
@@ -24,8 +30,8 @@ namespace yxdb_test
             {
 	            Assert.Equal((byte)1, yxdb.ReadByte(0));
 	            Assert.Equal((byte)1, yxdb.ReadByte("ByteField"));
-	            Assert.Equal(true, yxdb.ReadBool(1));
-	            Assert.Equal(true, yxdb.ReadBool("BoolField"));
+	            Assert.True(yxdb.ReadBool(1));
+	            Assert.True(yxdb.ReadBool("BoolField"));
 	            Assert.Equal(16, yxdb.ReadLong(2));
 	            Assert.Equal(16, yxdb.ReadLong("Int16Field"));
 	            Assert.Equal(32, yxdb.ReadLong(3));
@@ -98,13 +104,21 @@ namespace yxdb_test
 	        var path = GetPath("AllNormalFields.yxdb");
 	        var yxdb = new YxdbReader(path);
 	        yxdb.Next();
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadString(0));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadBool(0));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadBlob(0));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadDate(0));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadDouble(0));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadLong(0));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadByte(1));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadString(0));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadBool(0));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadBlob(0));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadDate(0));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadDouble(0));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadLong(0));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadByte(1));
+	        try
+	        {
+		        yxdb.ReadString(0);
+	        }
+	        catch (Exception ex)
+	        {
+		        _output.WriteLine(ex.ToString());
+	        }
 	        yxdb.Close();
         }
 
@@ -114,13 +128,21 @@ namespace yxdb_test
 	        var path = GetPath("AllNormalFields.yxdb");
 	        var yxdb = new YxdbReader(path);
 	        yxdb.Next();
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadString("Invalid"));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadBool("Invalid"));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadBlob("Invalid"));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadDate("Invalid"));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadDouble("Invalid"));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadLong("Invalid"));
-	        Assert.Throws<KeyNotFoundException>(() => yxdb.ReadByte("Invalid"));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadString("Invalid"));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadBool("Invalid"));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadBlob("Invalid"));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadDate("Invalid"));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadDouble("Invalid"));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadLong("Invalid"));
+	        Assert.Throws<ArgumentException>(() => yxdb.ReadByte("Invalid"));
+	        try
+	        {
+		        yxdb.ReadString(0);
+	        }
+	        catch (Exception ex)
+	        {
+		        _output.WriteLine(ex.ToString());
+	        }
 	        yxdb.Close();
         }
 
@@ -168,13 +190,43 @@ namespace yxdb_test
 
 	        yxdb.Next();
 	        blob = yxdb.ReadBlob(1);
-	        Assert.Equal(null, blob);
+	        Assert.Null(blob);
 
 	        yxdb.Next();
 	        blob = yxdb.ReadBlob(1);
 	        Assert.Equal(604732, blob.Length);
 	        
 	        yxdb.Close();
+        }
+
+        [Fact]
+        public void TestInvalidFile()
+        {
+	        try
+	        {
+		        var _ = new YxdbReader(GetPath("invalid.txt"));
+		        Assert.True(false, "expected code to throw but it did not");
+	        }
+	        catch (Exception ex)
+	        {
+		        Assert.Equal("file is not a valid YXDB file", ex.Message);
+		        _output.WriteLine(ex.ToString());
+	        }
+        }
+
+        [Fact]
+        public void TestSmallInvalidFile()
+        {
+	        try
+	        {
+		        var _ = new YxdbReader(GetPath("invalidSmall.txt"));
+		        Assert.True(false, "expected code to throw but it did not");
+	        }
+	        catch (Exception ex)
+	        {
+		        Assert.Equal("file is not a valid YXDB file", ex.Message);
+		        _output.WriteLine(ex.ToString());
+	        }
         }
 
         private static string GetPath(string fileName)

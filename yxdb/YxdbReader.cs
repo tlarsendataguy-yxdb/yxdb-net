@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml;
 
 [assembly: InternalsVisibleTo("yxdb_test")]
@@ -18,6 +19,8 @@ namespace yxdb
     /// </summary>
     public class YxdbReader
     {
+        private const string InvalidYxdbMsg = "file is not a valid YXDB file";
+
         /// <summary>
         /// Loads a .yxdb file from the file system.
         /// </summary>
@@ -232,12 +235,24 @@ namespace yxdb
 
         private void LoadHeaderAndMetaInfo()
         {
-            var header = GetHeader();
-            NumRecords = LittleEndian.ToInt64(header, 104);
-            _metaInfoSize = LittleEndian.ToInt32(header, 80);
-            LoadMetaInfo();
-            _record = YxdbRecord.FromFieldList(_fields);
-            _recordReader = new BufferedRecordReader(_stream, _record.FixedSize, _record.HasVar, NumRecords);
+            try
+            {
+                var header = GetHeader();
+                var fileType = Encoding.UTF8.GetString(header, 0, 21);
+                if (!"Alteryx Database File".Equals(fileType))
+                {
+                    CloseStreamAndThrow();
+                }
+                NumRecords = LittleEndian.ToInt64(header, 104);
+                _metaInfoSize = LittleEndian.ToInt32(header, 80);
+                LoadMetaInfo();
+                _record = YxdbRecord.FromFieldList(_fields);
+                _recordReader = new BufferedRecordReader(_stream, _record.FixedSize, _record.HasVar, NumRecords);
+            }
+            catch (Exception)
+            {
+                throw new Exception(InvalidYxdbMsg);
+            }
         }
 
         private byte[] GetHeader()
@@ -268,7 +283,7 @@ namespace yxdb
                 CloseStreamAndThrow();
             }
 
-            MetaInfoStr = System.Text.Encoding.Unicode.GetString(metaInfoBytes);
+            MetaInfoStr = Encoding.Unicode.GetString(metaInfoBytes);
             GetFields();
         }
 
@@ -379,7 +394,7 @@ namespace yxdb
         private void CloseStreamAndThrow()
         {
             Close();
-            throw new ArgumentException("file is an invalid YXDB");
+            throw new ArgumentException(InvalidYxdbMsg);
         }
     }
 }

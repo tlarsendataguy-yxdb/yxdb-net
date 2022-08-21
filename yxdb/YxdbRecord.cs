@@ -119,84 +119,140 @@ namespace yxdb
 
         public long? ExtractLongFrom(int index, byte[] buffer)
         {
+            if (!_longExtractors.ContainsKey(index))
+            {
+                ThrowInvalidIndex(index, "integer");
+            }
             var extractor = _longExtractors[index];
             return extractor(buffer);
         }
 
         public long? ExtractLongFrom(string name, byte[] buffer)
         {
+            if (!_nameToIndex.ContainsKey(name))
+            {
+                ThrowInvalidName(name);
+            }
             var index = _nameToIndex[name];
             return ExtractLongFrom(index, buffer);
         }
 
         public double? ExtractDoubleFrom(int index, byte[] buffer)
         {
+            if (!_doubleExtractors.ContainsKey(index))
+            {
+                ThrowInvalidIndex(index, "double");
+            }
             var extractor = _doubleExtractors[index];
             return extractor(buffer);
         }
 
         public double? ExtractDoubleFrom(string name, byte[] buffer)
         {
+            if (!_nameToIndex.ContainsKey(name))
+            {
+                ThrowInvalidName(name);
+            }
             var index = _nameToIndex[name];
             return ExtractDoubleFrom(index, buffer);
         }
 
         public string ExtractStringFrom(int index, byte[] buffer)
         {
+            if (!_stringExtractors.ContainsKey(index))
+            {
+                ThrowInvalidIndex(index, "string");
+            }
             var extractor = _stringExtractors[index];
             return extractor(buffer);
         }
 
         public string ExtractStringFrom(string name, byte[] buffer)
         {
+            if (!_nameToIndex.ContainsKey(name))
+            {
+                ThrowInvalidName(name);
+            }
             var index = _nameToIndex[name];
             return ExtractStringFrom(index, buffer);
         }
 
         public DateTime? ExtractDateFrom(int index, byte[] buffer)
         {
+            if (!_dateExtractors.ContainsKey(index))
+            {
+                ThrowInvalidIndex(index, "date/datetime");
+            }
             var extractor = _dateExtractors[index];
             return extractor(buffer);
         }
 
         public DateTime? ExtractDateFrom(string name, byte[] buffer)
         {
+            if (!_nameToIndex.ContainsKey(name))
+            {
+                ThrowInvalidName(name);
+            }
             var index = _nameToIndex[name];
             return ExtractDateFrom(index, buffer);
         }
 
         public bool? ExtractBoolFrom(int index, byte[] buffer)
         {
+            if (!_boolExtractors.ContainsKey(index))
+            {
+                ThrowInvalidIndex(index, "bool");
+            }
             var extractor = _boolExtractors[index];
             return extractor(buffer);
         }
 
         public bool? ExtractBoolFrom(string name, byte[] buffer)
         {
+            if (!_nameToIndex.ContainsKey(name))
+            {
+                ThrowInvalidName(name);
+            }
             var index = _nameToIndex[name];
             return ExtractBoolFrom(index, buffer);
         }
 
         public byte? ExtractByteFrom(int index, byte[] buffer)
         {
+            if (!_byteExtractors.ContainsKey(index))
+            {
+                ThrowInvalidIndex(index, "byte");
+            }
             var extractor = _byteExtractors[index];
             return extractor(buffer);
         }
 
         public byte? ExtractByteFrom(string name, byte[] buffer)
         {
+            if (!_nameToIndex.ContainsKey(name))
+            {
+                ThrowInvalidName(name);
+            }
             var index = _nameToIndex[name];
             return ExtractByteFrom(index, buffer);
         }
 
         public byte[] ExtractBlobFrom(int index, byte[] buffer)
         {
+            if (!_blobExtractors.ContainsKey(index))
+            {
+                ThrowInvalidIndex(index, "blob");
+            }
             var extractor = _blobExtractors[index];
             return extractor(buffer);
         }
 
         public byte[] ExtractBlobFrom(string name, byte[] buffer)
         {
+            if (!_nameToIndex.ContainsKey(name))
+            {
+                ThrowInvalidName(name);
+            }
             var index = _nameToIndex[name];
             return ExtractBlobFrom(index, buffer);
         }
@@ -249,6 +305,16 @@ namespace yxdb
             Fields.Add(new YxdbField(name, type));
             _nameToIndex[name] = index;
             return index;
+        }
+
+        private static void ThrowInvalidIndex(int index, String expectedType)
+        {
+            throw new ArgumentException($"index {index} is not a valid index or is not a {expectedType} field");
+        }
+
+        private static void ThrowInvalidName(string name)
+        {
+            throw new ArgumentException($"field {name} does not exist");
         }
     }
 }
