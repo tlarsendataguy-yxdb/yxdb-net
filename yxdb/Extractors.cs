@@ -174,7 +174,7 @@ namespace yxdb
                     return null;
                 }
 
-                return Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+                return Encoding.Latin1.GetString(bytes, 0, bytes.Length);
             };
         }
 
@@ -208,7 +208,7 @@ namespace yxdb
             var len = GetStrLen(buffer, start, fieldLength, charSize);
             if (charSize == 1)
             {
-                return Encoding.UTF8.GetString(buffer, start, len);
+                return Encoding.Latin1.GetString(buffer, start, len);
             }
 
             return Encoding.Unicode.GetString(buffer, start, len*2);
