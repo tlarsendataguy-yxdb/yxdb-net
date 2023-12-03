@@ -238,7 +238,7 @@ namespace yxdb
             try
             {
                 var header = GetHeader();
-                var fileType = Encoding.Latin1.GetString(header, 0, 21);
+                var fileType = Encoding.GetEncoding("Latin1").GetString(header, 0, 21);
                 if (!"Alteryx Database File".Equals(fileType))
                 {
                     CloseStreamAndThrow();
