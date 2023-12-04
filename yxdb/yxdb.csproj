@@ -3,7 +3,7 @@
     <PropertyGroup>
         <LangVersion>default</LangVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>1.0.0</PackageVersion>
+        <PackageVersion>1.1.0</PackageVersion>
         <Title>yxdb</Title>
         <Authors>tlarsendataguy</Authors>
         <Description>Read .yxdb files into .NET applications</Description>
@@ -13,12 +13,16 @@
         <RepositoryUrl>https://github.com/tlarsendataguy-yxdb/yxdb-net</RepositoryUrl>
         <RepositoryType>GitHub</RepositoryType>
         <PackageId>yxdb</PackageId>
-        <PackageReleaseNotes>Version 1.0 release</PackageReleaseNotes>
+        <PackageReleaseNotes>Version 1.1.0 adds a function to convert SpatialObj fields into GeoJSON strings.</PackageReleaseNotes>
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup>
       <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Text.Json" Version="8.0.0" />
+    </ItemGroup>
 
 </Project>
