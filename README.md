@@ -4,7 +4,7 @@ yxdb-net is a library for reading YXDB files into .NET applications.
 
 Install from [NuGet](https://www.nuget.org/packages/yxdb). The package is compiled against .NET Standard 2.0.
 
-The library does not have external dependencies and is a pure C# solution.
+The library has 1 depdency to Microsoft's `System.Text.Json` package and is a pure C# solution.
 
 The public API is contained in the YxdbReader class. Instantiate YxdbReader using one of the two constructors:
 * `new YxdbReader(String)` - load from a file
@@ -32,3 +32,5 @@ Each read method has 2 overloads:
 * `ReadX(String name)` - read by field name
 
 If either the index number or field name is invalid, the read methods will throw an exception.
+
+To read spatial objects, use the `yxdb.Spatial.ToGeoJson()` function. The `ToGeoJson()` function translates the binary SpatialObj format into a GeoJSON string.
